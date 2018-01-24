@@ -1,0 +1,51 @@
+<!--
+  Generated template for the CexchangeModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Buy {{exchangeChain}} with {{chain}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form>
+		<ion-list *ngIf="status != 1">
+			<ion-item>
+				<ion-label stacked color="primary">{{exchangeChain}} Quantity (Max: {{max}})</ion-label>
+				<ion-input [(ngModel)]="quantity" name="quantity" type="number" max="{{max}}" (keyup)="updateExchangeQuantity($event)"></ion-input>
+      </ion-item>
+      <ion-item>
+				<ion-label stacked color="primary">Rate</ion-label>
+				<ion-input [(ngModel)]="rate" name="rate" disabled type="number"></ion-input>
+      </ion-item>
+      <ion-item>
+				<ion-label stacked color="primary">Quantity of {{chain}}</ion-label>
+				<ion-input [(ngModel)]="exchangeQuantity" name="exchangeQuantity" disabled type="number"></ion-input>
+      </ion-item>
+      <ion-item>
+				<ion-label stacked color="primary">Fee ({{feeChain}} balance: {{balance}})</ion-label>
+				<ion-input [(ngModel)]="fee" name="exchangeFee" disabled type="text"></ion-input>
+      </ion-item>
+    </ion-list>
+    
+    <ion-row responsive-sm>
+			<ion-col [ngClass]="{'successBox' : (status == 1), 'failedBox':(status == -1)}">
+        {{resultTxt}}
+      </ion-col>
+    </ion-row>
+    <ion-row responsive-sm>
+      <ion-col>
+				<button ion-button [disabled]="disableExchange" color="primary" (click)="exchange()" block>Exchange</button>
+			</ion-col>
+      <ion-col>
+				<button ion-button color="light" (click)="closeModal()" block>Close</button>
+			</ion-col>
+		</ion-row>
+	</form>
+</ion-content>

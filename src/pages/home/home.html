@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Welcome</ion-title>
+    <ion-buttons end>
+      <button ion-button secondary (click)="logout()">
+        <ion-icon name="power"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div id="topBalance">
+          <div style="font-size:0.9em">Balance</div>
+          {{ balance/currentDecimals | number : '1.2-8' }}
+          <ion-select id="chainSelect" [(ngModel)]="chain" [selectOptions]="selectChainOptions" (ionChange)='loadChainData()'>
+            <ion-option value="ARDR">ARDR</ion-option>
+            <ion-option value="IGNIS">IGNIS</ion-option>
+            <ion-option value="AEUR">AEUR</ion-option>
+            <ion-option value="BITSWIFT">BITSWIFT</ion-option>
+          </ion-select>
+          <div style="font-size:0.7em" *ngIf="balances != null">
+              <span *ngFor="let chain of decimals; let i = index">
+                <div class="otherBalances" *ngIf="balances[i+1]['balanceNQT'] != 0 && i+1 != chainNum">
+                  {{chain.name}}: {{ balances[i+1]['balanceNQT']/chain.decimals | number : '1.2-8' }}
+                </div>
+              </span>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <a (click)="openModal('send')">
+          <ion-icon name="send"></ion-icon><br />Send
+        </a>
+      </ion-col>
+      <ion-col>
+        <a (click)="openModal('receive')">
+          <ion-icon name="download"></ion-icon><br />Receive
+        </a>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <a (click)="switchPage('transactions')">
+          <ion-icon name="list"></ion-icon><br />Transactions
+        </a>
+      </ion-col>
+      <ion-col>
+        <a (click)="switchPage('contacts')">
+          <ion-icon name="contacts"></ion-icon><br />Contacts
+        </a>
+      </ion-col>
+      <ion-col>
+        <a (click)="switchPage('exchange')">
+          <ion-icon name="repeat"></ion-icon><br />Coin Exchange
+        </a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

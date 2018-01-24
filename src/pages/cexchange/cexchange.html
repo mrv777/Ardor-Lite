@@ -1,0 +1,81 @@
+<!--
+  Generated template for the CexchangePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Coin Exchange</ion-title>
+    <ion-buttons end>
+      <button ion-button secondary (click)="logout()">
+        <ion-icon name="power"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row>
+    <ion-col col-12 col-sm-6>
+      <ion-label>Sell</ion-label>
+      <ion-select id="exchangeChainSelect" [(ngModel)]="exchangeChain" [selectOptions]="selectChainOptions" (ionChange)='loadChainData()'>
+        <ion-option value="ARDR">ARDR</ion-option>
+        <ion-option value="IGNIS">IGNIS</ion-option>
+        <ion-option value="AEUR">AEUR</ion-option>
+        <ion-option value="BITSWIFT">BITSWIFT</ion-option>
+      </ion-select>
+    </ion-col>
+    <ion-col col-12 col-sm-6>
+      <ion-label>For</ion-label>
+      <ion-select id="chainSelect" [(ngModel)]="chain" [selectOptions]="selectChainOptions" (ionChange)='loadChainData()'>
+        <ion-option value="ARDR">ARDR</ion-option>
+        <ion-option value="IGNIS">IGNIS</ion-option>
+        <ion-option value="AEUR">AEUR</ion-option>
+        <ion-option value="BITSWIFT">BITSWIFT</ion-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+  <ion-row class="hidden-xs">
+    <ion-col col-3>
+      <h4>{{exchangeChain}} Quantity</h4>
+    </ion-col>
+    <ion-col col-3>
+      <h4>Rate</h4>
+    </ion-col>
+    <ion-col col-3>
+      <h4>{{chain}} Quantity</h4>
+    </ion-col>
+    <ion-col col-3>
+
+    </ion-col>
+  </ion-row>
+  <ion-row *ngFor="let exchange of exchanges">
+    <ion-col col-12 col-sm-3>
+      <span class="show-xs"><b>{{exchangeChain}} Quantity:</b></span> {{exchange.quantityQNT/decimals[exchange.exchange-1]['decimals'] | number : '1.2-8'}}
+    </ion-col>
+    <ion-col col-12 col-sm-3>
+      <span class="show-xs"><b>Rate:</b></span> {{exchange.askNQTPerCoin/decimals[exchange.exchange-1]['decimals'] | number : '1.2-8'}}
+    </ion-col>
+    <ion-col col-12 col-sm-3>
+      <span class="show-xs"><b>{{chain}} Quantity:</b></span> {{exchange.exchangeQNT/decimals[exchange.chain-1]['decimals'] | number : '1.2-8'}}
+    </ion-col>
+    <ion-col col-12 col-sm-3>
+      <button ion-button color="dark" type="button" (click)="showExchange(exchange.askNQTPerCoin/decimals[exchange.exchange-1]['decimals'],exchange.exchangeQNT/decimals[exchange.chain-1]['decimals'])">Sell</button> 
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="exchanges == null">
+    <ion-col>
+      Loading exchange offers
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="exchanges != null && exchanges.length == 0">
+    <ion-col>
+      No exchange offers available
+    </ion-col>
+  </ion-row>
+
+</ion-content>

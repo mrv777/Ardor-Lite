@@ -1,0 +1,104 @@
+<!--
+  Generated template for the TransactionsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+	<ion-header id="homeHeader">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ accountID }}</ion-title>
+    <br />
+    <div id="topBalance">
+      {{ balance/currentDecimals | number : '1.2-8' }}
+      <ion-select id="chainSelect" [(ngModel)]="chain" [selectOptions]="selectChainOptions" (ionChange)='loadChainData()'>
+        <ion-option value="ARDR">ARDR</ion-option>
+        <ion-option value="IGNIS">IGNIS</ion-option>
+        <ion-option value="AEUR">AEUR</ion-option>
+        <ion-option value="BITSWIFT">BITSWIFT</ion-option>
+      </ion-select>
+    </div>
+    <ion-buttons end>
+      <button ion-button secondary (click)="openModal('send')">
+        <ion-icon name="send"></ion-icon>
+      </button>
+      <button ion-button secondary (click)="openModal('receive')"> 
+        <ion-icon name="barcode"> </ion-icon> 
+      </button>
+      <button ion-button secondary (click)="logout()">
+        <ion-icon name="power"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- <ion-list>
+    <ion-item *ngFor="let transaction of transactions">
+      <label>{{this.transactionTypes[transaction.type]['subtypes'][transaction.subtype]['name']}}</label>
+      <p>{{transaction.senderRS}} -> {{transaction.recipientRS}}</p>
+      <p>{{transaction.amountNQT}}</p>
+      <p>{{transaction.feeNQT}}</p>
+    </ion-item>
+  </ion-list> -->
+  <ion-grid>
+    <ion-row class="hidden-xs">
+			<ion-col col-7>
+        <h4>Transaction</h4>
+			</ion-col>
+			<ion-col col-3>
+        <h4>Amount</h4>
+      </ion-col>
+      <ion-col col-2>
+        <h4>Fee</h4>
+			</ion-col>
+    </ion-row>
+    <ion-row *ngIf="transactions == null">
+     <ion-col col-12 col-sm-7>
+        <h5>Loading Transactions</h5>
+			</ion-col>
+			<ion-col col-12 col-sm-3>
+      </ion-col>
+      <ion-col col-12 col-sm-2>
+			</ion-col>
+    </ion-row>
+    <ion-row *ngIf="transactions != null && transactions.length == 0">
+     <ion-col col-12 col-sm-7>
+        <h5>No Transactions</h5>
+			</ion-col>
+			<ion-col col-12 col-sm-3>
+      </ion-col>
+      <ion-col col-12 col-sm-2>
+			</ion-col>
+    </ion-row>
+		<ion-row *ngFor="let transaction of transactions">
+			<ion-col col-12 col-sm-7>
+        <h5><a target="_blank" href="https://ardor.tools/transaction/{{chain}}/{{transaction.fullHash}}">{{this.transactionTypes[transaction.type]['subtypes'][transaction.subtype]['name'] | capitalSpaces}}</a> <a *ngIf="transaction.attachment.message != null" (click)="openModal('message',transaction.fullHash)"><ion-icon name="mail"></ion-icon></a></h5>
+        <td><b>{{ transaction.date | date:'short' }}</b><i *ngIf="transaction.unconfirmed != null"> - Unconfirmed</i></td>
+        <b>From:</b> 
+          <span *ngIf="transaction.senderRS == accountID"><a target="_blank" href="https://ardor.tools/account/{{transaction.senderRS}}">You</a></span>
+          <span *ngIf="transaction.senderRS != accountID">
+            <a *ngIf="contacts.indexOf(transaction.senderRS) != -1" target="_blank" href="https://ardor.tools/account/{{transaction.senderRS}}">{{contactNames[contacts.indexOf(transaction.senderRS)]}}</a> 
+            <a *ngIf="contacts.indexOf(transaction.senderRS) == -1" target="_blank" href="https://ardor.tools/account/{{transaction.senderRS}}">{{transaction.senderRS}}</a> 
+            <ion-icon *ngIf="contacts.indexOf(transaction.senderRS) === -1" class="addContact" (click)="addContact(transaction.senderRS)" name="person-add"></ion-icon></span>
+        
+        <span *ngIf="transaction.recipientRS != null"><br /><b>To:</b> 
+          <span *ngIf="transaction.recipientRS == accountID"><a target="_blank" href="https://ardor.tools/account/{{transaction.recipientRS}}">You</a></span>
+          <span *ngIf="transaction.recipientRS != accountID">
+            <a *ngIf="contacts.indexOf(transaction.recipientRS) != -1" target="_blank" href="https://ardor.tools/account/{{transaction.recipientRS}}">{{contactNames[contacts.indexOf(transaction.recipientRS)]}}</a> 
+            <a *ngIf="contacts.indexOf(transaction.recipientRS) == -1" target="_blank" href="https://ardor.tools/account/{{transaction.recipientRS}}">{{transaction.recipientRS}}</a> 
+            <ion-icon *ngIf="contacts.indexOf(transaction.recipientRS) === -1" class="addContact" (click)="addContact(transaction.recipientRS)" name="person-add"></ion-icon></span></span>
+			</ion-col>
+			<ion-col col-12 col-sm-3 class="no-top-bottom-padding" *ngIf="transaction.amountNQT > 0">
+				<span class="show-xs"><b>Amount:</b></span> <span [ngClass]="{'danger' : (transaction.senderRS == accountID && transaction.amountNQT > 0), 'success':(transaction.recipientRS != null && transaction.recipientRS == accountID && transaction.amountNQT > 0)}">{{transaction.amountNQT/currentDecimals | number : '1.2-8'}} {{chain}}</span>
+      </ion-col>
+      <ion-col col-12 col-sm-3 class="no-top-bottom-padding" *ngIf="transaction.amountNQT == 0">
+      </ion-col>
+      <ion-col col-12 col-sm-2 class="no-top-bottom-padding">
+				<span class="show-xs"><b>Fee:</b></span> <span [ngClass]="{'danger' : (transaction.senderRS == accountID)}">{{transaction.feeNQT/currentDecimals | number : '1.0-8'}} {{chain}}</span>
+			</ion-col>
+    </ion-row>
+	</ion-grid>
+</ion-content>

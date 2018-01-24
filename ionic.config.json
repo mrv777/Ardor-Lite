@@ -1,0 +1,14 @@
+{
+  "name": "ardor",
+  "app_id": "",
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "https://ardor.jelurida.com"
+    }
+  ],
+  "integrations": {
+    "cordova": {}
+  }
+}

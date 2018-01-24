@@ -1,0 +1,22 @@
+page-cexchange {
+    .label {
+        font-weight: bold;
+    }
+
+    .header button {
+        font-size: 1.5em;
+    }
+
+    @media(max-width: 575px){
+        .hidden-xs {
+            display:none;
+        }
+        
+    }
+    @media(min-width: 576px){
+        .show-xs {
+            display:none;
+        }
+    }
+
+}

@@ -1,0 +1,19 @@
+page-send-modal {
+    #contactsIcon {
+        font-size: 2em;    
+    }
+
+    .successBox {
+    	background-color: #32db64;
+    	color: white;
+    	padding: 50px 10px;
+    	border-radius: 2px;
+    }
+
+    .failedBox {
+    	background-color: #f53d3d;
+    	color: white;
+    	padding: 10px;
+    	border-radius: 2px;
+    }
+}

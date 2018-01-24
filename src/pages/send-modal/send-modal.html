@@ -1,0 +1,69 @@
+<!--
+  Generated template for the SendModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Send {{chain}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="sendForm">
+		<ion-list *ngIf="status != 1">
+			<ion-item>
+				<ion-label stacked color="primary">Recipient</ion-label>
+				<ion-input [(ngModel)]="recipient" name="recipient" type="text" formControlName="recipientForm" (ngModelChange)="recipient = recipient.toUpperCase()">
+        </ion-input>
+        <button id="contactsIcon" ion-button clear color="dark" type="button" item-right (click)="openContacts()"> <ion-icon name="people"> </ion-icon> </button>
+        <ion-select [(ngModel)]="recipient" name="recipient" style="display:none;" formControlName="recipientForm">
+          <ion-option *ngFor="let contact of contacts" value="{{contact.account}}">
+            <span *ngIf="contact.name != ''">{{contact.name}}</span>
+            <span *ngIf="contact.name == ''">{{contact.account}}</span>
+          </ion-option>
+        </ion-select>
+			</ion-item>
+    </ion-list>
+    
+    <ion-list *ngIf="status != 1">
+			<ion-item>
+				<ion-label stacked color="primary">Amount</ion-label>
+				<ion-input [(ngModel)]="amount" name="amount" type="number" formControlName="amountForm">
+				</ion-input>
+			</ion-item>
+    </ion-list>
+    <ion-list *ngIf="status != 1">
+        <ion-item>
+          <ion-label stacked color="primary">Public Message (optional)</ion-label>
+          <ion-input [(ngModel)]="message" name="message" type="text" formControlName="messageForm">
+          </ion-input>
+        </ion-item>
+      </ion-list>
+    <ion-row responsive-sm>
+      <ion-col [ngClass]="{'successBox' : (status == 1), 'failedBox':(status == -1)}">
+        {{resultTxt}}
+      </ion-col>
+    </ion-row>
+
+		<ion-row responsive-sm>
+			<ion-col>
+				<button ion-button [disabled]="disableSend || !sendForm.valid" (click)="onSend()" type="submit" block>Send</button>
+			</ion-col>
+    </ion-row>
+    <ion-row responsive-sm>
+      <ion-col *ngIf="cordovaAvailable === true">
+				<button ion-button color="secondary" (click)="openBarcodeScanner()" block>Scan Barcode</button>
+			</ion-col>
+      <ion-col>
+				<button ion-button color="light" (click)="closeModal()" block>Close</button>
+			</ion-col>
+		</ion-row>
+	</form>
+
+</ion-content>
